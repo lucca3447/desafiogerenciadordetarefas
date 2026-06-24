@@ -31,3 +31,13 @@ def get_current_user(
         )
 
     return usuario
+
+
+def requirir_admin(usuario=Depends(get_current_user)):
+    if usuario.perfil != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Acesso negado. Requer previlégios de Administrador.",
+        )
+    return usuario
+

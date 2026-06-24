@@ -8,8 +8,14 @@ class TarefaRepository:
     def __init__(self, db: Session):
         self.db = db
 
+    def listar_todas(self):
+        return self.db.query(Tarefa).all()
+
     def listar_por_usuario(self, id_usuario: int):
         return self.db.query(Tarefa).filter(Tarefa.id_usuario == id_usuario).all()
+
+    def buscar_qualquer_por_id(self, id_tarefa: int):
+        return self.db.query(Tarefa).filter(Tarefa.id_tarefa == id_tarefa).first()
 
     def buscar_por_id(self, id_tarefa: int, id_usuario: int):
         return self.db.query(Tarefa).filter(

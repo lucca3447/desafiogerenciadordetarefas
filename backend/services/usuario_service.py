@@ -37,3 +37,24 @@ class UsuarioService:
         if not usuario:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuário não encontrado.")
         return usuario
+
+    def listar_todos(self):
+        return self.repository.listar()
+
+    def registrar_admin(self, usuario: UsuarioCreate):
+        usuario_existente = self.repository.buscar_por_email(usuario.email)
+        if usuario_existente:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email já cadastrado.")
+        
+        senha_hash = gerar_hash_senha(usuario.senha)
+        from models.usuario_model import Usuario
+        novo_admin = Usuario(
+            nome=usuario.nome,
+            email=usuario.email,
+            senha_hash=senha_hash,
+            perfil="admin"
+        )
+        self.repository.db.add(novo_admin)
+        self.repository.db.commit()
+        self.repository.db.refresh(novo_admin)
+        return novo_admin

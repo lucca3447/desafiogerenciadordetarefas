@@ -1,4 +1,4 @@
-﻿from datetime import datetime, timezone
+from datetime import datetime, timezone
 
 from sqlalchemy import Boolean, Column, DateTime, Integer, String
 from sqlalchemy.orm import relationship
@@ -17,6 +17,7 @@ class Usuario(Base):
     nome = Column(String(100), nullable=False)
     email = Column(String(150), nullable=False, unique=True, index=True)
     senha_hash = Column(String(255), nullable=False)
+    perfil = Column(String(30), nullable=False, default="comum")
     ativo = Column(Boolean, nullable=False, default=True)
     criado_em = Column(DateTime(timezone=True), nullable=False, default=utc_now)
     atualizado_em = Column(

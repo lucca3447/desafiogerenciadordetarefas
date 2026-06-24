@@ -7,7 +7,7 @@ from core.database import Base, engine
 from models.historico_tarefa_model import HistoricoTarefa
 from models.tarefa_model import Tarefa
 from models.usuario_model import Usuario
-from routers import usuario_router, tarefa_router, dashboard_router, historico_tarefa_router
+from routers import usuario_router, tarefa_router, dashboard_router, historico_tarefa_router, admin_router
 
 
 Base.metadata.create_all(bind=engine)
@@ -41,3 +41,4 @@ app.include_router(usuario_router.router)
 app.include_router(tarefa_router.router)
 app.include_router(dashboard_router.router)
 app.include_router(historico_tarefa_router.router)
+app.include_router(admin_router.router)
