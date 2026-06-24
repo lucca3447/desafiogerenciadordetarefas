@@ -20,6 +20,7 @@ class UsuarioResponse(BaseModel):
     id_usuario: int
     nome: str
     email: str
+    perfil: str
     ativo: bool
     criado_em: datetime
     atualizado_em: datetime
