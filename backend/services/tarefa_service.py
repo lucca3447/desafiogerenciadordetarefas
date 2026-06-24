@@ -42,9 +42,9 @@ class TarefaService:
         tarefa_db = self.buscar_tarefa_permitida(id_tarefa, usuario)
         
         if tarefa_in.status and tarefa_in.status != tarefa_db.status:
-            self.historico_service.registrar(id_tarefa, usuario.id_usuario, "status", tarefa_db.status, tarefa_in.status)
+            self.historico_service.registrar(id_tarefa, usuario.id_usuario, "atualizacao", "status", tarefa_db.status, tarefa_in.status)
         if tarefa_in.prioridade and tarefa_in.prioridade != tarefa_db.prioridade:
-            self.historico_service.registrar(id_tarefa, usuario.id_usuario, "prioridade", tarefa_db.prioridade, tarefa_in.prioridade)
+            self.historico_service.registrar(id_tarefa, usuario.id_usuario, "atualizacao", "prioridade", tarefa_db.prioridade, tarefa_in.prioridade)
             
         return self.repository.atualizar(tarefa_db, tarefa_in)
 
@@ -53,7 +53,7 @@ class TarefaService:
         if tarefa_db.status == status_in.status:
             return tarefa_db
             
-        self.historico_service.registrar(id_tarefa, usuario.id_usuario, "status", tarefa_db.status, status_in.status)
+        self.historico_service.registrar(id_tarefa, usuario.id_usuario, "atualizacao", "status", tarefa_db.status, status_in.status)
         
         tarefa_update = TarefaUpdate(status=status_in.status)
         tarefa_atualizada = self.repository.atualizar(tarefa_db, tarefa_update)

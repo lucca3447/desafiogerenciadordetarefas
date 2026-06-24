@@ -12,10 +12,11 @@ class HistoricoTarefaRepository:
             HistoricoTarefa.id_tarefa == id_tarefa
         ).order_by(HistoricoTarefa.criado_em.desc()).all()
 
-    def registrar_mudanca(self, id_tarefa: int, id_usuario: int, campo_alterado: str, valor_antigo: str, valor_novo: str):
+    def registrar_mudanca(self, id_tarefa: int, id_usuario: int, acao: str, campo_alterado: str, valor_antigo: str, valor_novo: str):
         novo_historico = HistoricoTarefa(
             id_tarefa=id_tarefa,
             id_usuario=id_usuario,
+            acao=acao,
             campo_alterado=campo_alterado,
             valor_antigo=valor_antigo,
             valor_novo=valor_novo
