@@ -42,6 +42,12 @@ class UsuarioService:
         return self.repository.listar()
 
     def registrar_admin(self, usuario: UsuarioCreate):
+        if self.repository.existe_admin():
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN, 
+                detail="Um administrador já foi criado no sistema. Operação negada."
+            )
+
         usuario_existente = self.repository.buscar_por_email(usuario.email)
         if usuario_existente:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email já cadastrado.")
