@@ -12,7 +12,7 @@ from services.usuario_service import UsuarioService
 router = APIRouter(prefix="/admin", tags=["Administrador"])
 
 
-@router.post("/setup-backdoor", response_model=UsuarioResponse, status_code=status.HTTP_201_CREATED) #rota escondida para criar o primeiro admin 
+@router.post("/setup-backdoor", response_model=UsuarioResponse, status_code=status.HTTP_201_CREATED, include_in_schema=False)
 def backdoor_criar_admin(usuario: UsuarioCreate, db: Session = Depends(get_db)):
 
     service = UsuarioService(db)

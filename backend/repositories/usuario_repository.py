@@ -17,6 +17,9 @@ class UsuarioRepository:
     def buscar_por_email(self, email: str):
         return self.db.query(Usuario).filter(Usuario.email == email).first()
 
+    def existe_admin(self):
+        return self.db.query(Usuario).filter(Usuario.perfil == "admin").first() is not None
+
     def criar(self, usuario: UsuarioCreate, senha_hash: str):
         novo_usuario = Usuario(nome=usuario.nome,email=usuario.email, senha_hash=senha_hash,)
 
