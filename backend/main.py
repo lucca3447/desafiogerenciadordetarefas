@@ -7,7 +7,7 @@ from core.database import Base, engine
 from models.historico_tarefa_model import HistoricoTarefa
 from models.tarefa_model import Tarefa
 from models.usuario_model import Usuario
-from routers import user_router, task_router, dashboard_router, historico_tarefa_router
+from routers import usuario_router, task_router, dashboard_router, historico_tarefa_router
 
 
 Base.metadata.create_all(bind=engine)
@@ -37,7 +37,7 @@ app.add_middleware(
 def home():
     return {"mensagem": "API do gerenciador de tarefas funcionando"}
 
-app.include_router(user_router.router)
+app.include_router(usuario_router.router)
 app.include_router(task_router.router)
 app.include_router(dashboard_router.router)
 app.include_router(historico_tarefa_router.router)
