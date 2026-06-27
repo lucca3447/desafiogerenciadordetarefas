@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+﻿from sqlalchemy.orm import Session
 
 from models.tarefa_model import Tarefa
 from schemas.tarefa_schema import TarefaCreate, TarefaUpdate
@@ -19,8 +19,8 @@ class TarefaRepository:
 
     def buscar_por_id(self, id_tarefa: int, id_usuario: int):
         return self.db.query(Tarefa).filter(
-            Tarefa.id_tarefa == id_tarefa, 
-            Tarefa.id_usuario == id_usuario
+            Tarefa.id_tarefa == id_tarefa,
+            Tarefa.id_usuario == id_usuario,
         ).first()
 
     def criar(self, tarefa: TarefaCreate, id_usuario: int):
@@ -28,9 +28,10 @@ class TarefaRepository:
             id_usuario=id_usuario,
             titulo=tarefa.titulo,
             descricao=tarefa.descricao,
+            status=tarefa.status,
             prioridade=tarefa.prioridade,
             responsavel=tarefa.responsavel,
-            data_limite=tarefa.data_limite
+            data_limite=tarefa.data_limite,
         )
         self.db.add(nova_tarefa)
         self.db.commit()
@@ -51,6 +52,11 @@ class TarefaRepository:
         if tarefa.data_limite is not None:
             tarefa_db.data_limite = tarefa.data_limite
 
+        self.db.commit()
+        self.db.refresh(tarefa_db)
+        return tarefa_db
+
+    def salvar(self, tarefa_db: Tarefa):
         self.db.commit()
         self.db.refresh(tarefa_db)
         return tarefa_db
