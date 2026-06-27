@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+﻿from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 from jose import JWTError, jwt
@@ -6,7 +6,7 @@ from passlib.context import CryptContext
 
 from core.config import settings
 
-ALGORITIMO= "HS256"
+ALGORITHM = "HS256"
 ACCESS_TOKEN_MINUTOS_PARA_EXPIRAR = 60
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -25,12 +25,11 @@ def criar_access_token(data: dict, expires_delta: Optional[timedelta] = None) ->
         expires_delta if expires_delta else timedelta(minutes=ACCESS_TOKEN_MINUTOS_PARA_EXPIRAR)
     )
     to_encode.update({"exp": expire})
-    return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=ALGORITIMO)
+    return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=ALGORITHM)
 
 
 def decodificar_token(token: str) -> Optional[dict]:
     try:
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITIMO])
-        return payload
+        return jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM])
     except JWTError:
         return None

@@ -1,7 +1,8 @@
-from fastapi import HTTPException, status
+﻿from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
-from core.security import gerar_hash_senha, verificar_senha, criar_access_token
+from core.config import settings
+from core.security import criar_access_token, gerar_hash_senha, verificar_senha
 from repositories.usuario_repository import UsuarioRepository
 from schemas.usuario_schema import UsuarioCreate, UsuarioUpdate
 
@@ -14,8 +15,10 @@ class UsuarioService:
         usuario_existente = self.repository.buscar_por_email(usuario.email)
         if usuario_existente:
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST, detail="Email já cadastrado.")
-        
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Email ja cadastrado.",
+            )
+
         senha_hash = gerar_hash_senha(usuario.senha)
         return self.repository.criar(usuario, senha_hash)
 
@@ -23,11 +26,15 @@ class UsuarioService:
         usuario = self.repository.buscar_por_email(email)
         if not usuario or not verificar_senha(senha_plana, usuario.senha_hash):
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, detail="Email ou senha incorretos.")
-        
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Email ou senha incorretos.",
+            )
+
         if not usuario.ativo:
             raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN, detail="Usuário inativo.")
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Usuario inativo.",
+            )
 
         token = criar_access_token(data={"sub": str(usuario.id_usuario), "type": "access"})
         return {"access_token": token, "token_type": "bearer"}
@@ -35,32 +42,34 @@ class UsuarioService:
     def obter_usuario_logado(self, id_usuario: int):
         usuario = self.repository.buscar_por_id(id_usuario)
         if not usuario:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuário não encontrado.")
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Usuario nao encontrado.",
+            )
         return usuario
 
     def listar_todos(self):
         return self.repository.listar()
 
-    def registrar_admin(self, usuario: UsuarioCreate):
+    def registrar_admin(self, usuario: UsuarioCreate, setup_key: str | None):
+        if not settings.ADMIN_SETUP_KEY or setup_key != settings.ADMIN_SETUP_KEY:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Chave de setup invalida ou nao configurada.",
+            )
+
         if self.repository.existe_admin():
             raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN, 
-                detail="Um administrador já foi criado no sistema. Operação negada."
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Um administrador ja foi criado no sistema. Operacao negada.",
             )
 
         usuario_existente = self.repository.buscar_por_email(usuario.email)
         if usuario_existente:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email já cadastrado.")
-        
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Email ja cadastrado.",
+            )
+
         senha_hash = gerar_hash_senha(usuario.senha)
-        from models.usuario_model import Usuario
-        novo_admin = Usuario(
-            nome=usuario.nome,
-            email=usuario.email,
-            senha_hash=senha_hash,
-            perfil="admin"
-        )
-        self.repository.db.add(novo_admin)
-        self.repository.db.commit()
-        self.repository.db.refresh(novo_admin)
-        return novo_admin
+        return self.repository.criar_admin(usuario, senha_hash)
