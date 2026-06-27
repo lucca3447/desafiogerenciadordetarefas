@@ -1,10 +1,10 @@
-from datetime import datetime
+﻿from datetime import datetime
 from typing import Literal
 
 from pydantic import BaseModel, Field
 
 
-AcaoHistorico = Literal["criada","atualizada","status_alterado","excluida"]
+AcaoHistorico = Literal["criada", "atualizada", "status_alterado", "excluida"]
 
 
 class HistoricoTarefaCreate(BaseModel):
