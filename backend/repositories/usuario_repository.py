@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+﻿from sqlalchemy.orm import Session
 
 from models.usuario_model import Usuario
 from schemas.usuario_schema import UsuarioCreate, UsuarioUpdate
@@ -21,13 +21,27 @@ class UsuarioRepository:
         return self.db.query(Usuario).filter(Usuario.perfil == "admin").first() is not None
 
     def criar(self, usuario: UsuarioCreate, senha_hash: str):
-        novo_usuario = Usuario(nome=usuario.nome,email=usuario.email, senha_hash=senha_hash,)
-
+        novo_usuario = Usuario(
+            nome=usuario.nome,
+            email=usuario.email,
+            senha_hash=senha_hash,
+        )
         self.db.add(novo_usuario)
         self.db.commit()
         self.db.refresh(novo_usuario)
-        
         return novo_usuario
+
+    def criar_admin(self, usuario: UsuarioCreate, senha_hash: str):
+        novo_admin = Usuario(
+            nome=usuario.nome,
+            email=usuario.email,
+            senha_hash=senha_hash,
+            perfil="admin",
+        )
+        self.db.add(novo_admin)
+        self.db.commit()
+        self.db.refresh(novo_admin)
+        return novo_admin
 
     def atualizar(self, usuario_db: Usuario, usuario: UsuarioUpdate, senha_hash: str | None = None):
         if usuario.nome is not None:
