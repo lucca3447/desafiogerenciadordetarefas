@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
-import { Trash2 } from "lucide-react";
-
+import { Trash2, Pencil } from "lucide-react";
+import ModalEditarTarefa from "../components/ModalEditarTarefa";
+import ModalNovaTarefa from "../components/ModalNovaTarefa";
 
 
 export default function Tarefas() {
   const [tarefas, setTarefas] = useState([]);
+
+  const [tarefaEditando, setTarefaEditando] = useState(null);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Busca as tarefas assim que a página abre
   useEffect(() => {
@@ -56,7 +61,14 @@ export default function Tarefas() {
       
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-800">Minhas Tarefas</h1>
+        <button
+            onClick={() => setIsModalOpen(true)}
+            className="bg-primary-500 hover:bg-primary-600 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+            Criar nova Tarefa
+            </button>
+
       </div>
+
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         {tarefas.length === 0 ? (
@@ -91,6 +103,13 @@ export default function Tarefas() {
                         >
                         <Trash2 size={18} />
                     </button>
+
+                    <button
+                        onClick={() => setTarefaEditando(tarefa)}
+                        className="p-2 text-gray-400 hover:text-primary-500 hover:bg-primary-50 rounded-lg transition-colors"
+                        >
+                        <Pencil size={18} />
+                        </button>
                 </div>
 
               </div>
@@ -98,6 +117,23 @@ export default function Tarefas() {
           </div>
         )}
       </div>
+      {tarefaEditando && (
+        <ModalEditarTarefa 
+            tarefa={tarefaEditando} 
+            onClose={() => setTarefaEditando(null)} 
+            onTarefaEditada={() => {setTarefaEditando(null);
+            window.location.reload();
+        }}/>
+        )}
+        {isModalOpen && (
+            <ModalNovaTarefa
+            onClose={() => setIsModalOpen(false)}
+            onTarefaCriada={() => {
+            setIsModalOpen(false);
+            window.location.reload();
+            }}
+        />
+        )}
     </div>
   );
 }
