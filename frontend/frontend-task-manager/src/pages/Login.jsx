@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router-dom";
 
 export default function Login() {
 
@@ -23,6 +24,9 @@ export default function Login() {
     <div className="flex h-screen items-center justify-center bg-gray-50">
       <div className="bg-white p-8 rounded-xl shadow-md w-96">
         <h2 className="text-2xl font-bold text-center mb-6"> Entrar na sua conta</h2>
+        <p className="text-center text-sm text-gray-600 mb-6"> Não possui uma conta? {""}
+          <Link to="/register" className="text-primary-600 font-semibold hover:underline"> Clique aqui</Link> para criar uma
+        </p>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           {/* div do email*/}
           <div>
