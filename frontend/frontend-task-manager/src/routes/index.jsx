@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Dashboard from "../pages/Dashboard";
+import Layout from "../components/Layout";
 
 // so  acessa se isAuthenticated for verdadeiro
 const PrivateRoute = ({ children }) => {
@@ -40,7 +41,9 @@ export default function AppRoutes() {
           path="/" 
           element={
             <PrivateRoute>
-              <Dashboard />
+              <Layout>
+                <Dashboard />
+              </Layout>
             </PrivateRoute>
           } 
         />
