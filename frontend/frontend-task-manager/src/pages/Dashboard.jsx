@@ -49,7 +49,16 @@ export default function Dashboard() {
               <h3 className="text-2xl font-bold text-black"> {metricas.concluidas} </h3>
             </div>
           </div>
-
+          {/* Card: Tarefas Atrasadas */}
+          <div className="bg-white p-6 rounded-xl shadow-sm border flex items-center gap-4 border-l-4 border-red-400">
+            <div className="p-3 bg-red-50 text-red-600 rounded-full">
+              <AlertCircle size={24} />
+            </div>
+            <div>
+              <p className=" text-sm font-medium text-black">Tarefas Atrasadas</p>
+              <h3 className="text-2xl font-bold text-black"> {metricas.atrasadas} </h3>
+            </div>
+          </div>
        </div>
     </div>
   );
