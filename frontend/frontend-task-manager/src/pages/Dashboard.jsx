@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Clock, CheckCircle, AlertCircle, ClipboardList  } from "lucide-react";
 import { api } from "../services/api";
+import ModalNovaTarefa from "../components/ModalNovaTarefa";
 
 
 export default function Dashboard() {
@@ -25,6 +26,8 @@ export default function Dashboard() {
   carregarMetricas();
   }, []); //Roda apenas uma vez quando a tela abrir
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div className="flex flex-col gap-6">
 
@@ -34,7 +37,7 @@ export default function Dashboard() {
           <h1 className=" text-2xl font-bold text-gray-800">Dashboard</h1>
           <p>Acompanhe o andamento das suas tarefas, {user?.nome}.</p>
         </div>
-        <button className="bg-primary-500 hover:bg-primary-600 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+        <button onClick={() => setIsModalOpen(true)} className="bg-primary-500 hover:bg-primary-600 text-white font-medium py-2 px-4 rounded-lg transition-colors">
           Adicionar nova tarefa
         </button>
       </div>
@@ -85,6 +88,18 @@ export default function Dashboard() {
             </div>
           </div>
        </div>
-    </div>
+      
+      {isModalOpen && (
+        <ModalNovaTarefa 
+          onClose={() => setIsModalOpen(false)} 
+          onTarefaCriada={() => {
+            // recarrega a página para atualizar os números
+            window.location.reload();
+          }} 
+        />
+      )}
+
+    </div> 
   );
 }
+   
