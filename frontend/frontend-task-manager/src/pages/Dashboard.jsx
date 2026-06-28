@@ -1,5 +1,5 @@
 import { useAuth } from "../context/AuthContext";
-import { Clock, CheckCircle2, AlertCircle } from "lucide-react";
+import { Clock, CheckCircle, AlertCircle } from "lucide-react";
 
 export default function Dashboard() {
 
@@ -29,17 +29,26 @@ export default function Dashboard() {
        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
           
           {/* card de tarefas Pendentes */}
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4 border-l-4 border-yellow-400">
+          <div className="bg-white p-6 rounded-xl shadow-sm border flex items-center gap-4 border-l-4 border-yellow-400">
             <div className="p-3 bg-yellow-50 text-yellow-600 rounded-full">
               <Clock size={24} />
             </div>
             <div>
-              <p className=" text-sm font-medium text-gray-500">Tarefas pendentes</p>
-              <h3 className="text-2xl font-bold text-gray-800"> {metricas.pendentes} </h3>
+              <p className=" text-sm font-medium text-black">Tarefas pendentes</p>
+              <h3 className="text-2xl font-bold text-black"> {metricas.pendentes} </h3>
             </div>
           </div>
 
           {/* Card de  tarefas concluidas */}
+          <div className="bg-white p-6 rounded-xl shadow-sm border flex items-center gap-4 border-l-4 border-green-400">
+            <div className="p-3 bg-green-50 text-green-600 rounded-full">
+              <CheckCircle size={24} />
+            </div>
+            <div>
+              <p className=" text-sm font-medium text-black">Tarefas concluidas</p>
+              <h3 className="text-2xl font-bold text-black"> {metricas.concluidas} </h3>
+            </div>
+          </div>
 
        </div>
     </div>
