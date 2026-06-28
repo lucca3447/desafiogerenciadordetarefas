@@ -23,9 +23,12 @@ export default function ModalHistoricoTarefa({ id_tarefa, onClose }) {
     buscarHistorico();
   }, [id_tarefa]);
 
-  // função auxiliar para formatar a data
+  // Função auxiliar para formatar a data (ex: 28/06/2026 às 14:30)
   const formatarData = (dataIso) => {
-    return new Date(dataIso).toLocaleString("pt-BR", {
+    // Se a data que vem do banco não tem o indicador de fuso horário "Z", 
+    // nós o adicionamos para garantir que o Javascript a interprete como UTC.
+    const dataComFuso = dataIso.endsWith('Z') ? dataIso : `${dataIso}Z`;
+    return new Date(dataComFuso).toLocaleString("pt-BR", {
       day: "2-digit", month: "2-digit", year: "numeric",
       hour: "2-digit", minute: "2-digit"
     });
