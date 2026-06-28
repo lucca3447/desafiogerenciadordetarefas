@@ -52,10 +52,13 @@ export default function ModalHistoricoTarefa({ id_tarefa, onClose }) {
               <p className="text-center text-gray-500">Nenhuma alteração registrada ainda.</p>
             ) : (
               historico.map((item) => (
-                <div key={item.id_historico} className="border-l-2 border-primary-300 pl-4 py-1">
-                  <p className="text-sm font-medium text-gray-800">{item.alteracao}</p>
+                <div key={item.id_historico_tarefa} className="border-l-2 border-primary-300 pl-4 py-1">
+                  <p className="text-sm font-medium text-gray-800">
+                    Ação: <span className="uppercase text-primary-600">{item.acao}</span>
+                    {item.campo_alterado && ` (${item.campo_alterado}: ${item.valor_antigo} -> ${item.valor_novo})`}
+                  </p>
                   <p className="text-xs text-gray-500 mt-1">
-                    Modificado em: {formatarData(item.modificado_em)}
+                    Em: {formatarData(item.criado_em)}
                   </p>
                 </div>
               ))
