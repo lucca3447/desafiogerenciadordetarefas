@@ -2,9 +2,7 @@ import { useEffect, useState } from "react";
 import { X, History } from "lucide-react";
 import { api } from "../services/api";
 
-import { useEffect, useState } from "react";
-import { X, History } from "lucide-react";
-import { api } from "../services/api";
+
 
 export default function ModalHistoricoTarefa({ id_tarefa, onClose }) {
   const [historico, setHistorico] = useState([]);
