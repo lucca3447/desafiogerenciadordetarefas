@@ -1,18 +1,47 @@
 import { useAuth } from "../context/AuthContext";
+import { Clock, CheckCircle2, AlertCircle } from "lucide-react";
 
 export default function Dashboard() {
 
   const {user, logout} = useAuth();
 
+  //para testar
+  const metricas = {
+    pendentes: 5,
+    concluidas: 12,
+    atrasadas: 2
+  };
+
   return (
-    <div className="flex h-screen items-center justify-center bg-gray-50 flex-col gap-6">
-      <h1 className="text-2xl font-bold text-gray-800"> 
-        Eai, {user?.nome}! </h1>
-        
-      {/* botao de logout */}
-      <button onClick={logout} className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-6 rounded-lg transition-colors">
-        Sair da conta
-      </button>
+    <div className="flex flex-col gap-6">
+
+      {/* Cabeçalho */}
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className=" text-2xl font-bold text-gray-800">Dashboard</h1>
+          <p>Acompanhe o andamento das suas tarefas, {user?.nome}.</p>
+        </div>
+        <button className="bg-primary-500 hover:bg-primary-600 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+          Adicionar nova tarefa
+        </button>
+      </div>
+       {/*Grid */}
+       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+          
+          {/* card de tarefas Pendentes */}
+          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4 border-l-4 border-yellow-400">
+            <div className="p-3 bg-yellow-50 text-yellow-600 rounded-full">
+              <Clock size={24} />
+            </div>
+            <div>
+              <p className=" text-sm font-medium text-gray-500">Tarefas pendentes</p>
+              <h3 className="text-2xl font-bold text-gray-800"> {metricas.pendentes} </h3>
+            </div>
+          </div>
+
+          {/* Card de  tarefas concluidas */}
+
+       </div>
     </div>
   );
 }
