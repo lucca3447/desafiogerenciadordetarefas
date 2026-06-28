@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
+import { Trash2 } from "lucide-react";
 
 
 
@@ -35,6 +36,21 @@ export default function Tarefas() {
         }
     };
 
+    const deletarTarefa = async (id_tarefa) => {
+    const confirmou = window.confirm("Tem certeza que deseja excluir essa tarefa?");
+    if (!confirmou) return;
+
+    try {
+        await api.delete(`/tarefas/${id_tarefa}`);
+        //remove a tarefa da lista sem recarregar a pagina
+         setTarefas((tarefasAtuais) =>
+            tarefasAtuais.filter((t) => t.id_tarefa !== id_tarefa));
+    } catch (erro) {
+        alert("Não foi possível excluir a tarefa!");
+    }
+    };
+
+
   return (
     <div className="flex flex-col gap-6">
       
@@ -69,6 +85,12 @@ export default function Tarefas() {
                         <option value="em_andamento">Em Andamento</option>
                         <option value="concluida">Concluída</option>
                     </select>
+                    <button
+                        onClick={() => deletarTarefa(tarefa.id_tarefa)}
+                        className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                        >
+                        <Trash2 size={18} />
+                    </button>
                 </div>
 
               </div>
