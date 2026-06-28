@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Dashboard from "../pages/Dashboard";
+import Tarefas from "../pages/Tarefas";
 import Layout from "../components/Layout";
 
 // so  acessa se isAuthenticated for verdadeiro
@@ -35,6 +36,16 @@ export default function AppRoutes() {
             <PublicRoute>
               <Register />
             </PublicRoute>
+          } 
+        />
+        <Route 
+          path="/tarefas" 
+          element={
+            <PrivateRoute>
+              <Layout>
+                <Tarefas />
+              </Layout>
+            </PrivateRoute>
           } 
         />
         <Route 
