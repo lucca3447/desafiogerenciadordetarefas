@@ -1,16 +1,29 @@
+import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { Clock, CheckCircle, AlertCircle } from "lucide-react";
+import { Clock, CheckCircle, AlertCircle, ClipboardList  } from "lucide-react";
+import { api } from "../services/api";
+
 
 export default function Dashboard() {
 
   const {user, logout} = useAuth();
 
-  //para testar
-  const metricas = {
-    pendentes: 5,
-    concluidas: 12,
-    atrasadas: 2
+
+  const [metricas,setMetricas] = useState({pendentes:0, concluidas:0, atrasadas:0, total: 0})
+
+  useEffect(() => {
+  const carregarMetricas = async () => {
+    try {
+      
+      const resposta = await api.get("/dashboard");
+      
+      setMetricas(resposta.data);
+    } catch (erro) {
+      console.error("Erro ao buscar dashboard:", erro);
+    }
   };
+  carregarMetricas();
+  }, []); //Roda apenas uma vez quando a tela abrir
 
   return (
     <div className="flex flex-col gap-6">
@@ -26,7 +39,19 @@ export default function Dashboard() {
         </button>
       </div>
        {/*Grid */}
-       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-4">
+
+          {/*card de total de tarefas */}
+          
+          <div className="bg-white p-6 rounded-xl shadow-sm border flex items-center gap-4 border-l-4 border-black">
+            <div className="p-3 bg-gray-50 text-black rounded-full">
+              <ClipboardList size={24} />
+            </div>
+            <div>
+              <p className=" text-sm font-medium text-black">Total de tarefas</p>
+              <h3 className="text-2xl font-bold text-black"> {metricas.total} </h3>
+            </div>
+          </div>
           
           {/* card de tarefas Pendentes */}
           <div className="bg-white p-6 rounded-xl shadow-sm border flex items-center gap-4 border-l-4 border-yellow-400">
