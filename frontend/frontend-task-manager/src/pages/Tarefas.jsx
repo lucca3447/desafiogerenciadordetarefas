@@ -65,6 +65,18 @@ export default function Tarefas() {
     }
     };
 
+  const coresStatus = {
+    pendente:     "bg-yellow-100 text-yellow-700",
+    em_andamento: "bg-blue-100 text-blue-700",
+    concluida:    "bg-primary-100 text-primary-700",
+  };
+
+  const coresPrioridade = {
+    alta:  "bg-red-100 text-red-700",
+    media: "bg-orange-100 text-orange-700",
+    baixa: "bg-gray-100 text-gray-600",
+  };
+
 
   return (
     <div className="flex flex-col gap-6">
@@ -137,13 +149,15 @@ export default function Tarefas() {
                 </div>
                 
                 <div className="flex gap-2">
-                    <span className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-medium uppercase">
-                    {tarefa.prioridade}
+
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold uppercase ${coresPrioridade[tarefa.prioridade]}`}>
+                      {tarefa.prioridade}
                     </span>
+                    
                     <select
                         value={tarefa.status}
                         onChange={(e) => alterarStatus(tarefa.id_tarefa, e.target.value)}
-                        className="text-xs font-medium px-2 py-1 rounded-full border border-gray-300 bg-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500">
+                        className={`text-xs font-semibold px-2 py-1 rounded-full border-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 ${coresStatus[tarefa.status]}`}>
                         <option value="pendente">Pendente</option>
                         <option value="em_andamento">Em Andamento</option>
                         <option value="concluida">Concluída</option>
