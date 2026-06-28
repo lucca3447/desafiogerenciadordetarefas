@@ -1,2 +1,24 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primary-50: #eefaf0;
+  --color-primary-100: #d6f3db;
+  --color-primary-200: #b1e6bc;
+  --color-primary-300: #81d295;
+  --color-primary-400: #52b86a;
+  --color-primary-500: #209738; /* Cor oficial da Brasil Software */
+  --color-primary-600: #217d33;
+  --color-primary-700: #1e622b;
+  --color-primary-800: #1b4e26;
+  --color-primary-900: #174021;
+}
+
+@layer base {
+  body {
+    background-color: #f8fafc;
+    color: #0f172a;
+    font-family: system-ui, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+}
