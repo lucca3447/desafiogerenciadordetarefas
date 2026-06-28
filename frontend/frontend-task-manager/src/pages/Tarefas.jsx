@@ -12,6 +12,16 @@ export default function Tarefas() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [busca, setBusca] = useState("");           
+  const [filtroStatus, setFiltroStatus] = useState("");      
+  const [filtroPrioridade, setFiltroPrioridade] = useState(""); 
+
+  const tarefasFiltradas = tarefas
+  .filter((t) => t.titulo.toLowerCase().includes(busca.toLowerCase()))
+  .filter((t) => (filtroStatus ? t.status === filtroStatus : true))
+  .filter((t) => (filtroPrioridade ? t.prioridade === filtroPrioridade : true));
+
+
   // Busca as tarefas assim que a página abre
   useEffect(() => {
     const buscarTarefas = async () => {
@@ -27,7 +37,7 @@ export default function Tarefas() {
   
   const alterarStatus = async (id_tarefa, novoStatus) => {
     try {
-    // Chama a rota PATCH do seu backend
+    
         await api.patch(`/tarefas/${id_tarefa}/status`, { status: novoStatus });
     
     // Atualiza a lista na tela sem precisar recarregar a página
@@ -59,25 +69,66 @@ export default function Tarefas() {
   return (
     <div className="flex flex-col gap-6">
       
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-800">Minhas Tarefas</h1>
-        <button
+      <div className="flex flex-col gap-4">
+        {/* titulo e botao */}
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-gray-800">Minhas Tarefas</h1>
+          <button
             onClick={() => setIsModalOpen(true)}
-            className="bg-primary-500 hover:bg-primary-600 text-white font-medium py-2 px-4 rounded-lg transition-colors">
-            Criar nova Tarefa
-            </button>
+            className="bg-primary-500 hover:bg-primary-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+            >
+            + Nova Tarefa
+          </button>
+        </div>
 
-      </div>
+          {/*  barra de busca e filtros*/}
+          <div className="flex flex-col sm:flex-row gap-3">
+    
+          {/* Barra de Busca */}
+        <input
+              type="text"
+              placeholder="Buscar por título..."
+              value={busca}
+              onChange={(e) => setBusca(e.target.value)}
+              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+        />
+
+        {/* Filtro de Status */}
+        <select
+          value={filtroStatus}
+          onChange={(e) => setFiltroStatus(e.target.value)}
+          className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white"
+        >
+          <option value="">Todos os Status</option>
+          <option value="pendente">Pendente</option>
+          <option value="em_andamento">Em Andamento</option>
+          <option value="concluida">Concluída</option>
+        </select>
+
+    {/* Filtro de Prioridade */}
+    <select
+      value={filtroPrioridade}
+      onChange={(e) => setFiltroPrioridade(e.target.value)}
+      className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white"
+    >
+      <option value="">Todas as Prioridades</option>
+      <option value="alta">Alta</option>
+      <option value="media">Média</option>
+      <option value="baixa">Baixa</option>
+    </select>
+
+  </div>
+</div>
 
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-        {tarefas.length === 0 ? (
+        {tarefasFiltradas.length === 0 ? (
           <div className="p-8 text-center text-gray-500">
             Nenhuma tarefa encontrada.
           </div>
         ) : (
           <div className="divide-y divide-gray-100">
-            {tarefas.map((tarefa) => (
+            {tarefasFiltradas.map((tarefa) => (
               <div key={tarefa.id_tarefa} className="p-5 flex justify-between items-center hover:bg-gray-50 transition-colors">
                 
                 <div>
