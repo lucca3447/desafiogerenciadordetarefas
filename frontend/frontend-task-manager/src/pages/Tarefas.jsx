@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
-import { Trash2, Pencil } from "lucide-react";
+import { Trash2, Pencil, History } from "lucide-react";
 import ModalEditarTarefa from "../components/ModalEditarTarefa";
 import ModalNovaTarefa from "../components/ModalNovaTarefa";
+import ModalHistoricoTarefa from "../components/ModalHistoricoTarefa";
 
 
 export default function Tarefas() {
   const [tarefas, setTarefas] = useState([]);
 
   const [tarefaEditando, setTarefaEditando] = useState(null);
+  const [tarefaHistorico, setTarefaHistorico] = useState(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -172,9 +174,18 @@ export default function Tarefas() {
                     <button
                         onClick={() => setTarefaEditando(tarefa)}
                         className="p-2 text-gray-400 hover:text-primary-500 hover:bg-primary-50 rounded-lg transition-colors"
+                        title="Editar Tarefa"
                         >
                         <Pencil size={18} />
-                        </button>
+                    </button>
+
+                    <button
+                        onClick={() => setTarefaHistorico(tarefa.id_tarefa)}
+                        className="p-2 text-gray-400 hover:text-primary-500 hover:bg-primary-50 rounded-lg transition-colors"
+                        title="Ver Histórico"
+                        >
+                        <History size={18} />
+                    </button>
                 </div>
 
               </div>
@@ -198,6 +209,13 @@ export default function Tarefas() {
             window.location.reload();
             }}
         />
+        )}
+        
+        {tarefaHistorico && (
+            <ModalHistoricoTarefa
+            id_tarefa={tarefaHistorico}
+            onClose={() => setTarefaHistorico(null)}
+            />
         )}
     </div>
   );
