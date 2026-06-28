@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
-import { Trash2 } from "lucide-react";
-
+import { Trash2, Pencil } from "lucide-react";
+import ModalEditarTarefa from "../components/ModalEditarTarefa";
 
 
 export default function Tarefas() {
   const [tarefas, setTarefas] = useState([]);
+
+  const [tarefaEditando, setTarefaEditando] = useState(null);
 
   // Busca as tarefas assim que a página abre
   useEffect(() => {
@@ -91,6 +93,13 @@ export default function Tarefas() {
                         >
                         <Trash2 size={18} />
                     </button>
+
+                    <button
+                        onClick={() => setTarefaEditando(tarefa)}
+                        className="p-2 text-gray-400 hover:text-primary-500 hover:bg-primary-50 rounded-lg transition-colors"
+                        >
+                        <Pencil size={18} />
+                        </button>
                 </div>
 
               </div>
@@ -98,6 +107,14 @@ export default function Tarefas() {
           </div>
         )}
       </div>
+      {tarefaEditando && (
+        <ModalEditarTarefa 
+            tarefa={tarefaEditando} 
+            onClose={() => setTarefaEditando(null)} 
+            onTarefaEditada={() => {setTarefaEditando(null);
+            window.location.reload();
+        }}/>
+)}
     </div>
   );
 }
