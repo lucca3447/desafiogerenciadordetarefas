@@ -17,7 +17,7 @@ export default function Tarefas() {
   const [busca, setBusca] = useState("");           
   const [filtroStatus, setFiltroStatus] = useState("");      
   const [filtroPrioridade, setFiltroPrioridade] = useState(""); 
-
+ 
   const tarefasFiltradas = tarefas
   .filter((t) => t.titulo.toLowerCase().includes(busca.toLowerCase()))
   .filter((t) => (filtroStatus ? t.status === filtroStatus : true))
@@ -146,8 +146,18 @@ export default function Tarefas() {
               <div key={tarefa.id_tarefa} className="p-5 flex justify-between items-center hover:bg-gray-50 transition-colors">
                 
                 <div>
-                  <h3 className="font-semibold text-gray-800">{tarefa.titulo}</h3>
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-semibold text-gray-800">{tarefa.titulo}</h3>
+                    {tarefa.data_limite && new Date(tarefa.data_limite) < new Date() && tarefa.status !== 'concluida' && (
+                      <span className="px-2 py-0.5 bg-red-100 text-red-700 rounded text-xs font-bold uppercase tracking-wider">
+                        Atrasada
+                      </span>
+                    )}
+                  </div>
                   <p className="text-sm text-gray-500 mt-1">{tarefa.descricao}</p>
+                  {tarefa.responsavel && (
+                    <p className="text-xs text-gray-400 mt-2 font-medium">Resp: {tarefa.responsavel}</p>
+                  )}
                 </div>
                 
                 <div className="flex gap-2">

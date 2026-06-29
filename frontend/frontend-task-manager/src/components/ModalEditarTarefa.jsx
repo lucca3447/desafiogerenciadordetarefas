@@ -6,6 +6,7 @@ export default function ModalEditarTarefa({ tarefa, onClose, onTarefaEditada }) 
   
   const [titulo, setTitulo] = useState(tarefa.titulo);
   const [descricao, setDescricao] = useState(tarefa.descricao || "");
+  const [responsavel, setResponsavel] = useState(tarefa.responsavel || "");
   const [prioridade, setPrioridade] = useState(tarefa.prioridade);
   const [dataLimite, setDataLimite] = useState(
     tarefa.data_limite ? tarefa.data_limite.split("T")[0] : ""
@@ -22,6 +23,7 @@ export default function ModalEditarTarefa({ tarefa, onClose, onTarefaEditada }) 
         titulo,
         descricao,
         prioridade,
+        responsavel,
         data_limite: dataLimite ? new Date(dataLimite).toISOString() : null,
       });
       onTarefaEditada(); // Avisa a página que precisa recarregar
@@ -59,6 +61,15 @@ export default function ModalEditarTarefa({ tarefa, onClose, onTarefaEditada }) 
               onChange={(e) => setDescricao(e.target.value)}
               rows="3"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none resize-none"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Responsável</label>
+            <input
+              type="text"
+              value={responsavel}
+              onChange={(e) => setResponsavel(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none"
             />
           </div>
           <div>

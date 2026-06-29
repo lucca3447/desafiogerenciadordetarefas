@@ -6,15 +6,22 @@ export default function ModalNovaTarefa({ onClose, onTarefaCriada }) {
 
   const [titulo, setTitulo] = useState("");
   const [descricao, setDescricao] = useState("");
+  const [responsavel, setResponsavel] = useState("");
+  const [prioridade, setPrioridade] = useState("media");
+  const [dataLimite, setDataLimite] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      
-      await api.post("/tarefas", { titulo, descricao });
-      
+      await api.post("/tarefas", { 
+        titulo, 
+        descricao,
+        responsavel,
+        prioridade,
+        data_limite: dataLimite ? new Date(dataLimite).toISOString() : null
+      });
       //  o envio dos dados der  certo, chamama a função q para avisar do sucesso
       onTarefaCriada();
       
@@ -61,6 +68,39 @@ export default function ModalNovaTarefa({ onClose, onTarefaCriada }) {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none resize-none"
               placeholder="Detalhes da tarefa..."
             />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Responsável</label>
+            <input
+              type="text"
+              value={responsavel}
+              onChange={(e) => setResponsavel(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none"
+              placeholder="Nome do responsável"
+            />
+          </div>
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Prioridade</label>
+              <select
+                value={prioridade}
+                onChange={(e) => setPrioridade(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none"
+              >
+                <option value="baixa">Baixa</option>
+                <option value="media">Média</option>
+                <option value="alta">Alta</option>
+              </select>
+            </div>
+            <div className="flex-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Data Limite</label>
+              <input
+                type="date"
+                value={dataLimite}
+                onChange={(e) => setDataLimite(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none"
+              />
+            </div>
           </div>
           <div className="flex justify-end gap-3 mt-4">
             <button
