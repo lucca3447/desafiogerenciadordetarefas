@@ -17,11 +17,18 @@ export default function Tarefas() {
   const [busca, setBusca] = useState("");           
   const [filtroStatus, setFiltroStatus] = useState("");      
   const [filtroPrioridade, setFiltroPrioridade] = useState(""); 
- 
+  const [filtroResponsavel, setFiltroResponsavel] = useState("");
+  const [filtroDataLimite, setFiltroDataLimite] = useState("");
+
   const tarefasFiltradas = tarefas
-  .filter((t) => t.titulo.toLowerCase().includes(busca.toLowerCase()))
+  .filter((t) => 
+    t.titulo.toLowerCase().includes(busca.toLowerCase()) || 
+    (t.descricao && t.descricao.toLowerCase().includes(busca.toLowerCase()))
+  )
   .filter((t) => (filtroStatus ? t.status === filtroStatus : true))
-  .filter((t) => (filtroPrioridade ? t.prioridade === filtroPrioridade : true));
+  .filter((t) => (filtroPrioridade ? t.prioridade === filtroPrioridade : true))
+  .filter((t) => (filtroResponsavel ? (t.responsavel && t.responsavel.toLowerCase().includes(filtroResponsavel.toLowerCase())) : true))
+  .filter((t) => (filtroDataLimite ? (t.data_limite && t.data_limite.startsWith(filtroDataLimite)) : true));
 
 
   // Busca as tarefas assim que a página abre
@@ -130,6 +137,21 @@ export default function Tarefas() {
       <option value="media">Média</option>
       <option value="baixa">Baixa</option>
     </select>
+
+    <input
+      type="text"
+      placeholder="Responsável..."
+      value={filtroResponsavel}
+      onChange={(e) => setFiltroResponsavel(e.target.value)}
+      className="w-32 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+    />
+
+    <input
+      type="date"
+      value={filtroDataLimite}
+      onChange={(e) => setFiltroDataLimite(e.target.value)}
+      className="w-36 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-gray-500"
+    />
 
   </div>
 </div>
