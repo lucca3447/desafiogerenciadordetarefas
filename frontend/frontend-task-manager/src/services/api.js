@@ -1,9 +1,9 @@
 import axios from "axios";
 
 
-// Url local por enquanto
+// Tenta pegar a URL do servidor de produção, se não achar usa o localhost
 export const api = axios.create({
-  baseURL: "http://localhost:8000", 
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:8000", 
 });
 
 // interceptador: verifica token antes de qualquer requisição sair do frontend
