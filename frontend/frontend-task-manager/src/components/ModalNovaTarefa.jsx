@@ -27,7 +27,8 @@ export default function ModalNovaTarefa({ onClose, onTarefaCriada }) {
       
       onClose();
     } catch (err) {
-      alert("Erro ao criar a tarefa!");
+      const mensagemDeErro = err.response?.data?.detail || "Erro ao criar a tarefa!";
+      alert(mensagemDeErro);
     } finally {
       setLoading(false);
     }

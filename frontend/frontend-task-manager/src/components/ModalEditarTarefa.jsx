@@ -29,7 +29,8 @@ export default function ModalEditarTarefa({ tarefa, onClose, onTarefaEditada }) 
       onTarefaEditada(); // Avisa a página que precisa recarregar
       onClose();
     } catch (err) {
-      alert("Erro ao editar a tarefa!");
+      const mensagemDeErro = err.response?.data?.detail || "Erro ao atualizar a tarefa!";
+      alert(mensagemDeErro);
     } finally {
       setLoading(false);
     }
