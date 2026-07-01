@@ -1,4 +1,4 @@
-﻿from datetime import datetime, timezone
+from datetime import datetime, timezone
 
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
@@ -33,7 +33,7 @@ class TarefaService:
         return tarefa
 
     def criar_tarefa(self, tarefa_in: TarefaCreate, usuario: Usuario):
-        if tarefa_in.data_limite and tarefa_in.data_limite.replace(tzinfo=timezone.utc) < datetime.now(timezone.utc):
+        if tarefa_in.data_limite and tarefa_in.data_limite.date() < datetime.now(timezone.utc).date():
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="A data limite nao pode estar no passado.",
